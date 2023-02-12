@@ -12,7 +12,7 @@ module.exports.register = async (req,res,next) => {
         for (let result of results) {
             let [err,status] = result
             if (!err){
-                return res.json({msg:err,status:status})
+                return res.json({msg:status,status:err})
             }
         }
 
