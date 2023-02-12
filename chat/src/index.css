@@ -16,3 +16,6 @@ body {
 .Toastify__toast--error {
   background: #011638 !important;
 }
+.Toastify__toast--success {
+  background: #011638 !important;
+}
