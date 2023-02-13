@@ -43,7 +43,11 @@ async function createUser(username,email,password){
             email,
             password:hashedPassword
         })
-        const userCopy = {username:user.username,email:user.email}
+
+        const userCopy = {...user._doc}
+        delete userCopy.password
+        delete userCopy._id
+        delete userCopy.__v
         return userCopy
     }
     catch (error){

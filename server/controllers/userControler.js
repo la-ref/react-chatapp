@@ -44,8 +44,9 @@ module.exports.login = async (req,res,next) => {
                 return res.json({msg:status,status:err})
             }
         }
-        
-        return res.json({user:checkers[2][1], status:true})
+        checkers[1].then((val) => {
+            return res.json({user:val[1], status:true})
+        })
     }
     catch (e){
         console.log(e)
