@@ -43,8 +43,8 @@ async function createUser(username,email,password){
             email,
             password:hashedPassword
         })
-        delete user.password
-        return user
+        const userCopy = {username:user.username,email:user.email}
+        return userCopy
     }
     catch (error){
         throw(error);

@@ -1,8 +1,7 @@
-const mongoose = require("mongoose")
-const {User} = require("../models/userModel")
+const {User} = require("./userModel")
 
 async function userNameVerification(username){
-    checkUserName = await User.findOne({username})
+    const checkUserName = await User.findOne({username})
     if(checkUserName){
         return [false,"Username Already Exist"]
     }
@@ -22,7 +21,7 @@ const validateEmail = (email) => {
 };
 
 async function emailVerification(email){
-    checkEmail = await User.findOne({email})
+    const checkEmail = await User.findOne({email})
     if(checkEmail){
         return [false,"Email Already Exist"]
     }
