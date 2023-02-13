@@ -1,4 +1,4 @@
-import {React,useState} from 'react'
+import {React,useEffect,useState} from 'react'
 import {FormContainerStyled} from "../components/FormContainer.styles"
 import { Navigate } from "react-router-dom";
 import axios from "axios";
@@ -46,7 +46,6 @@ export default function Login() {
   const handleSubmit = async () => {
     if (handleValidation()) {
         const {data} = await axios.post(loginRoute,values)
-        console.log(data)
         if(data.status === false){
             toast.error(data.msg,toastOption)
         }
@@ -60,7 +59,7 @@ export default function Login() {
 
   return (
     <>
-        {logged && (
+        {(logged || localStorage.getItem("rchat-app-user")) && (
           <Navigate to="/Chat" replace={true} />
         )}
       <FormContainerStyled info={{name:"Login",msg:"Connect", redirect:"/Register"}} setValue={handleChange} submited={handleSubmit}></FormContainerStyled>

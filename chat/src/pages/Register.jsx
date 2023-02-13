@@ -59,13 +59,12 @@ export default function Register() {
   const handleSubmit = async () => {
     if (handleValidation()) {
         const {data} = await axios.post(registerRoute,values)
-        console.log(data)
         if(data.status === false){
             toast.error(data.msg,toastOption)
         }
         else if(data.status === true){
             toast.success("Succesfuly registered!",toastOption)
-            localStorage.setItem("rchat-app-user",JSON.stringify(data.user))
+            //localStorage.setItem("rchat-app-user",JSON.stringify(data.user))
             setRegistered(true)
         }
     }
@@ -73,7 +72,7 @@ export default function Register() {
 
   return (
     <>
-        {registered && (
+        {(registered || localStorage.getItem("rchat-app-user")) && (
           <Navigate to="/login" replace={true} />
         )}
       <FormContainerStyled info={{name:"Register",msg:"Create Account", redirect:"/login"}} setValue={handleChange} submited={handleSubmit}></FormContainerStyled>

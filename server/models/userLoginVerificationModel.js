@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt")
 
 async function userNameVerification(username){
     const checkUserName = await User.findOne({$or: [{username},{email:username}]})
-    console.log(username,checkUserName.email)
     if(checkUserName && (checkUserName.username === username || checkUserName.email === username)){
         return [true,null]
     }

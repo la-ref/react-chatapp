@@ -49,7 +49,6 @@ module.exports.login = async (req,res,next) => {
         })
     }
     catch (e){
-        console.log(e)
         next()
         return res.json({msg:"Error",status:false})
     }
