@@ -1,6 +1,6 @@
-const {User,createUser} = require("../models/userModel.js")
-const {userNameVerification,emailVerification,passwordVerification} = require("../models/userRegisterVerificationModel.js")
-const {userNameVerifLog,passVerifLog} = require("../models/userLoginVerificationModel.js")
+const {createUser} = require("../models/user/userModel.js")
+const {userNameVerification,emailVerification,passwordVerification} = require("../models/user/userRegisterVerificationModel.js")
+const {userNameVerifLog,passVerifLog} = require("../models/user/userLoginVerificationModel.js")
 
 
 

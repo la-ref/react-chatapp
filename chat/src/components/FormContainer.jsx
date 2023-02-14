@@ -1,6 +1,5 @@
 import {React} from 'react'
 import {Link} from "react-router-dom"
-import "react-toastify/dist/ReactToastify.css";
 
 export default function FormContainer({className,info,setValue,submited}) {
 

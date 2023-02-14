@@ -1,4 +1,4 @@
-const {User} = require("./userModel")
+const {User} = require("../user/userModel")
 const bcrypt = require("bcrypt")
 
 async function userNameVerification(username){
