@@ -105,7 +105,6 @@ export default function Avatar() {
         for(let i = 0;i<4;i++){
             if (i <= (dataAvatars.length)){
                 if (!dataAvatars[i]){
-                    console.log(reader)
                     const buff = Buffer.from(reader);
                     dataAvatars[i] = (buff).toString("base64")
                 }
@@ -127,11 +126,10 @@ export default function Avatar() {
                 ava = res
                 if (res.length < 4){
                     await tryServer(res)
-                    .then((ress) => {
+                    .then(async (ress) => {
                         ava = ress
                         if (ress.length < 4){
-                            console.log("sdfdsfsdfdsfdsfdss")
-                            fillArray(ress).then((res) => {ava = res})
+                            await fillArray(ress).then((resss) => {ava = resss;console.log(resss)})
                         }
                     })
                 }
