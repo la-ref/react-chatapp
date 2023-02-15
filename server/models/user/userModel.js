@@ -46,7 +46,6 @@ async function createUser(username,email,password){
 
         const userCopy = {...user._doc}
         delete userCopy.password
-        delete userCopy._id
         delete userCopy.__v
         return userCopy
     }

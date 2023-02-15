@@ -1,7 +1,6 @@
-import {React,useState} from 'react'
+import {React} from 'react'
 
-export default function Avatars({avatars}) {
-  const [selectedAvatar,setSelectedAvatar] = useState(0)
+export default function Avatars({avatars,selected,setSelected}) {
 
   return (
     <>
@@ -9,8 +8,8 @@ export default function Avatars({avatars}) {
             {avatars && avatars.map((avatar,index) => {
               return(
       
-                <div key={index} className={`avatar ${selectedAvatar === index ? "selected" : ""}`}>
-                  <img src={`data:image/svg+xml;base64,${avatar}`} alt="avatar" onClick={() => setSelectedAvatar(index)}/>
+                <div key={index} className={`avatar ${selected === index ? "selected" : ""}`}>
+                  <img src={`data:image/svg+xml;base64,${avatar}`} alt="avatar" onClick={() => setSelected(index)}/>
                 </div>
                 )
             })}

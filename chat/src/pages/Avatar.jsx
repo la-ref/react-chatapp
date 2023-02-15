@@ -1,7 +1,6 @@
 import {React,useState,useEffect} from 'react'
 import { Navigate } from "react-router-dom";
 import axios from "axios";
-//import loader from "../assets/loader.svg"
 import unknown from "../assets/unknown.svg"
 import {toast} from "react-toastify"
 import { getAvatarRoute, getAvatarRoute2 } from '../utils/APIRoutes';
@@ -14,7 +13,7 @@ export default function Avatar() {
 
     const [avatars,setAvatars] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
-    const [selectedAvatar,setSelectedAvatar] = useState(undefined)
+    const [selectedAvatar,setSelectedAvatar] = useState(0)
 
     const toastOption = {
         position:"top-right",
@@ -28,7 +27,13 @@ export default function Avatar() {
     }
 
     const setProflePicture = async () => {
-
+        if (selectedAvatar === undefined){
+            toast.error("Please select an avatar",toastOption)
+        }
+        else{
+            const user = await JSON.parse(localStorage.getItem("rchat-app-user"));
+            await axios.post()
+        }
     }
 
     const tryLocal = async () => {
@@ -91,19 +96,26 @@ export default function Avatar() {
     }
 
     const fillArray = async (dataAvatars) => {
+        let reader = undefined
+        await fetch(unknown)
+        .then(r => r.text())
+        .then(text => {
+            reader = text
+        });
         for(let i = 0;i<4;i++){
             if (i <= (dataAvatars.length)){
                 if (!dataAvatars[i]){
-                    const buff = Buffer.from(unknown);
+                    console.log(reader)
+                    const buff = Buffer.from(reader);
                     dataAvatars[i] = (buff).toString("base64")
                 }
             }
             else{
-                const buff = Buffer.from(unknown);
+                const buff = Buffer.from(reader);
                 dataAvatars.push((buff).toString("base64"))
             }
         }
-        return 
+        return dataAvatars
         
     }
 
@@ -118,7 +130,8 @@ export default function Avatar() {
                     .then((ress) => {
                         ava = ress
                         if (ress.length < 4){
-                            ava = fillArray(ress)
+                            console.log("sdfdsfsdfdsfdsfdss")
+                            fillArray(ress).then((res) => {ava = res})
                         }
                     })
                 }
@@ -132,7 +145,7 @@ export default function Avatar() {
     return (
         <div className='avatar-style'>
             { isLoading && <Loader></Loader>}
-            {!isLoading && <AvatarContainerStyled avatars={avatars}>Avatar</AvatarContainerStyled>}
+            {!isLoading && <AvatarContainerStyled avatars={avatars} selectedAvatar={selectedAvatar} setSelectedAvatar={setSelectedAvatar}>Avatar</AvatarContainerStyled>}
         </div>
     )
 }

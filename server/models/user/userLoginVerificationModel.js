@@ -16,7 +16,6 @@ async function passwordVerification(username,password){
         if(isPasswordValid){
             let userCopy = {...user._doc}
             delete userCopy.password
-            delete userCopy._id
             delete userCopy.__v
             return [true,userCopy]
         }
