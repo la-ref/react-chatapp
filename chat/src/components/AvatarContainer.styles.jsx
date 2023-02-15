@@ -2,13 +2,10 @@ import styled from "styled-components"
 import AvatarContainer from "./AvatarContainer"
 
 export const AvatarContainerStyled = styled(AvatarContainer)`
-    height: 100vh;
-    width: 100vw;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    background-color: #2E294E;
+    justify-content: center;
+    flex-direction: column;
 
     h1 {
         text-align: center;

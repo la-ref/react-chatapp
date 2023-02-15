@@ -7,6 +7,8 @@ import {toast} from "react-toastify"
 import { getAvatarRoute, getAvatarRoute2 } from '../utils/APIRoutes';
 import { AvatarContainerStyled } from '../components/AvatarContainer.styles';
 import { Buffer } from 'buffer';
+import Loader from '../components/Loader';
+import "./Avatar.css"
 
 export default function Avatar() {
 
@@ -122,13 +124,15 @@ export default function Avatar() {
                 }
             })
             console.log(ava)
-            setAvatars(ava)})()
+            setAvatars(ava)
+            setIsLoading(false)})()
 
     }, [])
 
     return (
-        <>
-            <AvatarContainerStyled avatars={avatars}>Avatar</AvatarContainerStyled>
-        </>
+        <div className='avatar-style'>
+            { isLoading && <Loader></Loader>}
+            {!isLoading && <AvatarContainerStyled avatars={avatars}>Avatar</AvatarContainerStyled>}
+        </div>
     )
 }
