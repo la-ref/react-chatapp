@@ -45,7 +45,7 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (handleValidation()) {
-        const {data} = await axios.post(loginRoute,values)
+        const {data} = await axios.post(loginRoute,values).catch(()=>{ toast.error("An error has occurred",toastOption); return})
         if(data.status === false){
             toast.error(data.msg,toastOption)
         }

@@ -7,6 +7,7 @@ import { getAvatarRoute, getAvatarRoute2 } from '../utils/APIRoutes';
 import { AvatarContainerStyled } from '../components/AvatarContainer.styles';
 import { Buffer } from 'buffer';
 import Loader from '../components/Loader';
+import {avatarRoute} from "../utils/APIRoutes"
 import "./Avatar.css"
 
 export default function Avatar() {
@@ -14,6 +15,7 @@ export default function Avatar() {
     const [avatars,setAvatars] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
     const [selectedAvatar,setSelectedAvatar] = useState(0)
+    const [selected,setSelected] = useState(false)
 
     const toastOption = {
         position:"top-right",
@@ -26,13 +28,28 @@ export default function Avatar() {
         }
     }
 
+    const user = JSON.parse(localStorage.getItem("rchat-app-user"));
+
+    console.log(user)
+
     const setProflePicture = async () => {
         if (selectedAvatar === undefined){
             toast.error("Please select an avatar",toastOption)
         }
         else{
             const user = await JSON.parse(localStorage.getItem("rchat-app-user"));
-            await axios.post()
+            if (user){
+                await axios.post(`${avatarRoute}/${user._id}`).then((res) => {
+                    user.isAvatarImageSet = true;
+                    user.avatarImage = avatars[selectedAvatar]
+                    localStorage.setItem("rchat-app-user")
+                    setSelected(true)
+
+                })
+                .catch(() => {
+                    toast.error("An error has occurred",toastOption)
+                })
+            }
         }
     }
 
@@ -41,7 +58,7 @@ export default function Avatar() {
         for(let i = dataAvatars.length;i<4;i++){
             let image = undefined
             if (i === 0){
-                await axios.get(getAvatarRoute2+"test")
+                await axios.get(getAvatarRoute2+""+user)
                 .then((res) => {
                     image = res
                 })
@@ -50,7 +67,7 @@ export default function Avatar() {
                 })
 
             }else{
-                await axios.get(getAvatarRoute2+"test"+(Math.round(Math.random()*1000)).toString())
+                await axios.get(getAvatarRoute2+""+user+(Math.round(Math.random()*1000)).toString())
                 .then((res) => {
                     image = res
                 })
@@ -71,7 +88,7 @@ export default function Avatar() {
         for(let i = dataAvatars.length;i<4;i++){
             let image = undefined
             if (i === 0){
-                await axios.get(getAvatarRoute+"?username=test")
+                await axios.get(getAvatarRoute+"?username="+user)
                 .then((res) => {
                     image = res
                 })
@@ -80,7 +97,7 @@ export default function Avatar() {
                 })
                     
             }else{
-                await axios.get(getAvatarRoute+"?username=test"+(Math.round(Math.random()*1000)).toString())
+                await axios.get(getAvatarRoute+"?username="+user+""+(Math.round(Math.random()*1000)).toString())
                 .then((res) => {
                     image = res
                 })
@@ -119,21 +136,22 @@ export default function Avatar() {
     }
 
     useEffect( () => {
-        (async () => {
-            let ava = undefined
-            await tryLocal()
-            .then(async (res) => {
-                ava = res
-                if (res.length < 4){
-                    await tryServer(res)
-                    .then(async (ress) => {
-                        ava = ress
-                        if (ress.length < 4){
-                            await fillArray(ress).then((resss) => {ava = resss;console.log(resss)})
-                        }
-                    })
-                }
-            })
+        if (user)
+            (async () => {
+                let ava = undefined
+                await tryLocal()
+                .then(async (res) => {
+                    ava = res
+                    if (res.length < 4){
+                        await tryServer(res)
+                        .then(async (ress) => {
+                            ava = ress
+                            if (ress.length < 4){
+                                await fillArray(ress).then((resss) => {ava = resss;console.log(resss)})
+                            }
+                        })
+                    }
+                })
             console.log(ava)
             setAvatars(ava)
             setIsLoading(false)})()
@@ -142,8 +160,13 @@ export default function Avatar() {
 
     return (
         <div className='avatar-style'>
+            {selected && (
+                <Navigate to="/" replace={true} />
+            )}{(!user) && (
+                <Navigate to="/login" replace={true} />
+            )}
             { isLoading && <Loader></Loader>}
-            {!isLoading && <AvatarContainerStyled avatars={avatars} selectedAvatar={selectedAvatar} setSelectedAvatar={setSelectedAvatar}>Avatar</AvatarContainerStyled>}
+            {!isLoading && <AvatarContainerStyled avatars={avatars} selectedAvatar={selectedAvatar} setSelectedAvatar={setSelectedAvatar} onSumbit={setProflePicture}>Avatar</AvatarContainerStyled>}
         </div>
     )
 }
