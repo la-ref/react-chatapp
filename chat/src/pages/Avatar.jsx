@@ -165,10 +165,10 @@ export default function Avatar() {
     return (
         <div className='avatar-style'>
             {(selected) && (
-                <Navigate to="/Chat" replace={true} />
+                <Navigate to="/chat" replace={true} />
             )}
             {((user && user.isAvatarImageSet)) && (
-                <Navigate to="/Chat" replace={true} />
+                <Navigate to="/chat" replace={true} />
             )}{(!user) && (
                 <Navigate to="/login" replace={true} />
             )}

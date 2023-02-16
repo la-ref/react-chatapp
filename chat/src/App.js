@@ -14,6 +14,8 @@ function App() {
           <Route path="/login" element={<Login/>}></Route>
           <Route path="/setavatar" element={<Avatar/>}></Route>
           <Route path="/" element={<Chat/>}></Route>
+          <Route path="/chat" element={<Chat/>}></Route>
+          <Route path="*" element={<Chat/>}></Route>
         </Routes>
         <ToastContainer/>
       </BrowserRouter>

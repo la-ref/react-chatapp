@@ -59,8 +59,11 @@ export default function Login() {
 
   return (
     <>
-        {(logged || localStorage.getItem("rchat-app-user")) && (
-          <Navigate to="/Chat" replace={true} />
+        {(logged || (((localStorage.getItem("rchat-app-user"))) && ((localStorage.getItem("rchat-app-user")).isAvatarImageSet))) && (
+          <Navigate to="/chat" replace={true} />
+        )}
+        {(logged && !((localStorage.getItem("rchat-app-user")).isAvatarImageSet)) && (
+          <Navigate to="/setavatar" replace={true} />
         )}
       <FormContainerStyled info={{name:"Login",msg:"Connect", redirect:"/Register"}} setValue={handleChange} submited={handleSubmit}></FormContainerStyled>
     </>

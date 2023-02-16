@@ -5,20 +5,24 @@ import axios from "axios"
 import { allUsersRoute } from '../utils/APIRoutes';
 import Contact from '../components/Contact';
 import Welcome from '../components/Welcome';
+import ChatContainer from '../components/ChatContainer';
+import Loader from '../components/Loader';
 
 export default function Chat() {
   const [contacts,setContacts] = useState([]);
   const [currentChat,setCurrentChat] = useState(undefined);
   const [me,setMe] = useState(JSON.parse(localStorage.getItem("rchat-app-user")))
+  const [isLoading,setIsLoading] = useState(true);
   useEffect(()=>{
     (async () => {
       try {
         if (me && me.isAvatarImageSet){
           const data = await axios.get(`${allUsersRoute}/${me._id}`)
           setContacts(data.data.users)
+          setIsLoading(false)
         }
       }
-      catch(e){console.log(e);return}
+      catch(e){return}
 
     })()
   },[])
@@ -28,6 +32,7 @@ export default function Chat() {
   }
   return (
     <Container>
+      { isLoading && <Loader></Loader>}
       {(!me) && (
         <Navigate to="/login" replace={true} />
       )}
@@ -36,7 +41,8 @@ export default function Chat() {
       )}
       <div className='ct-container'>
         <Contact contacts={contacts} currentUser={me} changeChat={changeCurrentChat}></Contact>
-        {!currentChat && <Welcome currentUser={me}></Welcome>}
+        {(!currentChat && !isLoading) && <Welcome currentUser={me}></Welcome>}
+        {(currentChat && !isLoading ) && <ChatContainer currentUser={currentChat}></ChatContainer>}
       </div>
     </Container>
   )
