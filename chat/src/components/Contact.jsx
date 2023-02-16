@@ -14,4 +14,3 @@ export default function Contact({contacts,currentUser}) {
         <div>Contact</div>
     )
 }
-con
