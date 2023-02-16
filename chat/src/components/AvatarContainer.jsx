@@ -1,9 +1,7 @@
-import {React,useState} from 'react'
+import {React} from 'react'
 import Avatars from './Avatars';
-import {toast} from "react-toastify"
-import axios from 'axios';
 
-export default function AvatarContainer({className,avatars,selectedAvatar,setSelectedAvatar,setProflePicture}) {
+export default function AvatarContainer({className,avatars,selectedAvatar,setSelectedAvatar,onSubmit}) {
 
     return (
         <div className={className}>
@@ -11,7 +9,7 @@ export default function AvatarContainer({className,avatars,selectedAvatar,setSel
                 <h1>Pick an avatar as your profile picture</h1>
             </div>
             <Avatars avatars={avatars} selected={selectedAvatar} setSelected={setSelectedAvatar}></Avatars>
-            <button className="submit-btn" onClick={setProflePicture}>Set as avatar</button>
+            <button className="submit-btn" onClick={onSubmit}>Set as avatar</button>
         
         </div>
     )

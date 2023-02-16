@@ -1,4 +1,4 @@
-const { getavatar } = require("../controllers/avatarController");
+const { getavatar,setAvatar } = require("../controllers/avatarController");
 const rateLimit = require('express-rate-limit')
 
 const router = require("express").Router();
@@ -16,6 +16,8 @@ const limiter = rateLimit({
     }
 })
 
-router.get("/",limiter,getavatar)
+router.get("/avatar",limiter,getavatar)
+
+router.post("/setAvatar/:id",setAvatar)
 
 module.exports.avatarRoute = router;

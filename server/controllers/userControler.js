@@ -1,6 +1,7 @@
 const {createUser} = require("../models/user/userModel.js")
 const {userNameVerification,emailVerification,passwordVerification} = require("../models/user/userRegisterVerificationModel.js")
 const {userNameVerifLog,passVerifLog} = require("../models/user/userLoginVerificationModel.js")
+const {User} = require("../models/user/userModel.js")
 
 
 
@@ -49,6 +50,18 @@ module.exports.login = async (req,res,next) => {
         })
     }
     catch (e){
+        next()
+        return res.json({msg:"Error",status:false})
+    }
+
+}
+
+module.exports.getAllUsers = async (req,res,next) => {
+    try {
+        const users = await User.find({_id:{$ne:req.params.id}}).select(["email","username","avatarImage","_id"])
+        return res.json({users,status:true})
+    }
+    catch{
         next()
         return res.json({msg:"Error",status:false})
     }

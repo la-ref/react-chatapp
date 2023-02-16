@@ -1,4 +1,5 @@
 const {avatar} = require("../models/avatar/avatarModel.js")
+const {User} = require("../models/user/userModel.js")
 const {getService} = require("../externals/externalAvatar")
 
 module.exports.getavatar = async (req,res,next) => {
@@ -32,4 +33,20 @@ module.exports.getavatar = async (req,res,next) => {
         return res.json({msg:"Error",status:false})
     }
 
+}
+
+module.exports.setAvatar = async (req,res,next) => {
+    try {
+        const userID = req.params.id;
+        const avatarImage = req.body.image;
+        const userData = await User.findByIdAndUpdate(userID,{
+            isAvatarImageSet:true,
+            avatarImage
+        })
+        return res.json({img:avatarImage,status:true})
+    }
+    catch {
+        next()
+        return res.json({msg:"Error",status:false})
+    }
 }

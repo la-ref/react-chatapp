@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/auth",userRoutes)
 
-app.use("/avatar",avatarRoute)
+app.use("/api/",avatarRoute)
 
 const server = app.listen(PORT,() => {
     console.log("Server started on port ",PORT)

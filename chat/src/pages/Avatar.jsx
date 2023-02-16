@@ -15,7 +15,7 @@ export default function Avatar() {
     const [avatars,setAvatars] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
     const [selectedAvatar,setSelectedAvatar] = useState(0)
-    const [selected,setSelected] = useState(false)
+    const [selected,setSelected] = useState(0)
 
     const toastOption = {
         position:"top-right",
@@ -30,20 +30,24 @@ export default function Avatar() {
 
     const user = JSON.parse(localStorage.getItem("rchat-app-user"));
 
-    console.log(user)
-
     const setProflePicture = async () => {
         if (selectedAvatar === undefined){
             toast.error("Please select an avatar",toastOption)
         }
         else{
-            const user = await JSON.parse(localStorage.getItem("rchat-app-user"));
+            const userData = await JSON.parse(localStorage.getItem("rchat-app-user"));
             if (user){
-                await axios.post(`${avatarRoute}/${user._id}`).then((res) => {
-                    user.isAvatarImageSet = true;
-                    user.avatarImage = avatars[selectedAvatar]
-                    localStorage.setItem("rchat-app-user")
-                    setSelected(true)
+                await axios.post(`${avatarRoute}/${user._id}`,{image:avatars[selectedAvatar]}).then((res) => {
+                    if (res.data.status){
+                        userData.isAvatarImageSet = true;
+                        userData.avatarImage = avatars[selectedAvatar]
+                        localStorage.setItem("rchat-app-user",JSON.stringify(userData))
+                        setSelected(true)
+                        toast.success("Successfully selected",toastOption)
+                    }
+                    else{
+                        toast.error("An error has occurred",toastOption)
+                    }
 
                 })
                 .catch(() => {
@@ -58,7 +62,7 @@ export default function Avatar() {
         for(let i = dataAvatars.length;i<4;i++){
             let image = undefined
             if (i === 0){
-                await axios.get(getAvatarRoute2+""+user)
+                await axios.get(getAvatarRoute2+""+user.username)
                 .then((res) => {
                     image = res
                 })
@@ -67,7 +71,7 @@ export default function Avatar() {
                 })
 
             }else{
-                await axios.get(getAvatarRoute2+""+user+(Math.round(Math.random()*1000)).toString())
+                await axios.get(getAvatarRoute2+""+user.username+(Math.round(Math.random()*1000)).toString())
                 .then((res) => {
                     image = res
                 })
@@ -88,7 +92,7 @@ export default function Avatar() {
         for(let i = dataAvatars.length;i<4;i++){
             let image = undefined
             if (i === 0){
-                await axios.get(getAvatarRoute+"?username="+user)
+                await axios.get(getAvatarRoute+"?username="+user.username)
                 .then((res) => {
                     image = res
                 })
@@ -97,7 +101,7 @@ export default function Avatar() {
                 })
                     
             }else{
-                await axios.get(getAvatarRoute+"?username="+user+""+(Math.round(Math.random()*1000)).toString())
+                await axios.get(getAvatarRoute+"?username="+user.username+""+(Math.round(Math.random()*1000)).toString())
                 .then((res) => {
                     image = res
                 })
@@ -136,7 +140,7 @@ export default function Avatar() {
     }
 
     useEffect( () => {
-        if (user)
+        if (user && !user.isAvatarImageSet)
             (async () => {
                 let ava = undefined
                 await tryLocal()
@@ -160,13 +164,13 @@ export default function Avatar() {
 
     return (
         <div className='avatar-style'>
-            {selected && (
+            {((user && user.isAvatarImageSet) || selected) && (
                 <Navigate to="/" replace={true} />
             )}{(!user) && (
                 <Navigate to="/login" replace={true} />
             )}
             { isLoading && <Loader></Loader>}
-            {!isLoading && <AvatarContainerStyled avatars={avatars} selectedAvatar={selectedAvatar} setSelectedAvatar={setSelectedAvatar} onSumbit={setProflePicture}>Avatar</AvatarContainerStyled>}
+            {!isLoading && <AvatarContainerStyled avatars={avatars} selectedAvatar={selectedAvatar} setSelectedAvatar={setSelectedAvatar} onSubmit={setProflePicture}>Avatar</AvatarContainerStyled>}
         </div>
     )
 }
