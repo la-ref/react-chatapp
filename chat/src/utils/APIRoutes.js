@@ -6,4 +6,4 @@ export const avatarRoute = `${host}/api/setavatar`
 export const getAvatarRoute = `${host}/api/avatar`
 export const getAvatarRoute2 = `https://api.multiavatar.com/`
 
-export const allUsersRoute = `${host}/api/allusers`
+export const allUsersRoute = `${host}/api/auth/allusers`

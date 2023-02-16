@@ -15,7 +15,7 @@ export default function Avatar() {
     const [avatars,setAvatars] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
     const [selectedAvatar,setSelectedAvatar] = useState(0)
-    const [selected,setSelected] = useState(0)
+    const [selected,setSelected] = useState(false)
 
     const toastOption = {
         position:"top-right",
@@ -164,8 +164,11 @@ export default function Avatar() {
 
     return (
         <div className='avatar-style'>
-            {((user && user.isAvatarImageSet) || selected) && (
-                <Navigate to="/" replace={true} />
+            {(selected) && (
+                <Navigate to="/Chat" replace={true} />
+            )}
+            {((user && user.isAvatarImageSet)) && (
+                <Navigate to="/Chat" replace={true} />
             )}{(!user) && (
                 <Navigate to="/login" replace={true} />
             )}

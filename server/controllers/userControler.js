@@ -58,7 +58,7 @@ module.exports.login = async (req,res,next) => {
 
 module.exports.getAllUsers = async (req,res,next) => {
     try {
-        const users = await User.find({_id:{$ne:req.params.id}}).select(["email","username","avatarImage","_id"])
+        const users = await User.find({$and: [{ isAvatarImageSet: true }, {_id:{$ne:req.params.id}}]}).select(["email","username","avatarImage"])
         return res.json({users,status:true})
     }
     catch{

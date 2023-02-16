@@ -4,24 +4,28 @@ import { Navigate } from "react-router-dom";
 import axios from "axios"
 import { allUsersRoute } from '../utils/APIRoutes';
 import Contact from '../components/Contact';
+import Welcome from '../components/Welcome';
 
 export default function Chat() {
   const [contacts,setContacts] = useState([]);
-  const [currentUser,setCurrentUser] = useState(undefined);
-  const me = JSON.parse(localStorage.getItem("rchat-app-user"))
+  const [currentChat,setCurrentChat] = useState(undefined);
+  const [me,setMe] = useState(JSON.parse(localStorage.getItem("rchat-app-user")))
   useEffect(()=>{
     (async () => {
       try {
         if (me && me.isAvatarImageSet){
           const data = await axios.get(`${allUsersRoute}/${me._id}`)
-          setContacts(data.data)
+          setContacts(data.data.users)
         }
       }
       catch(e){console.log(e);return}
 
     })()
-    console.log(me)
   },[])
+
+  const changeCurrentChat = (chat) => {
+    setCurrentChat(chat)
+  }
   return (
     <Container>
       {(!me) && (
@@ -31,7 +35,8 @@ export default function Chat() {
         <Navigate to="/setavatar" replace={true} />
       )}
       <div className='ct-container'>
-        <Contact contacts={contacts} currentUser={currentUser}></Contact>
+        <Contact contacts={contacts} currentUser={me} changeChat={changeCurrentChat}></Contact>
+        {!currentChat && <Welcome currentUser={me}></Welcome>}
       </div>
     </Container>
   )
