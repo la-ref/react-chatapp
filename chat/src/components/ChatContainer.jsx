@@ -4,20 +4,21 @@ import ChatInput from './ChatInput';
 import Logout from './Logout';
 import Message from './Message';
 
-export default function ChatContainer({currentUser}) {
+
+export default function ChatContainer({currentChat, handleMsg}) {
 
     const handleSendMsg = async (msg) => {
-
+        handleMsg(msg)
     }
     return (
         <Container>
             <div className="chat-header">
                 <div className="user-details">
                     <div className="avatar">
-                        <img src={`data:image/svg+xml;base64,${currentUser.avatarImage}`} alt="avatar"/>
+                        <img src={`data:image/svg+xml;base64,${currentChat.avatarImage}`} alt="avatar"/>
                     </div>
                     <div className="username">
-                        <h3>{currentUser.username}</h3>
+                        <h3>{currentChat.username}</h3>
                     </div>
                 </div>
                 <Logout></Logout>

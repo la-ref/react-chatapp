@@ -4,6 +4,7 @@ const cors = require("cors")
 const mongoose = require("mongoose")
 const userRoutes = require("./routes/userRoutes")
 const {avatarRoute} = require("./routes/avatarRoute")
+const messageRoute = require("./routes/messageRoute")
 const app = express()
 require("dotenv").config()
 
@@ -16,6 +17,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth",userRoutes)
 
 app.use("/api/",avatarRoute)
+
+app.use("/api/messages/",messageRoute)
 
 const server = app.listen(PORT,() => {
     console.log("Server started on port ",PORT)

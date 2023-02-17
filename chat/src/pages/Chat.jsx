@@ -7,11 +7,12 @@ import Contact from '../components/Contact';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
 import Loader from '../components/Loader';
+import { sendMsgRoute } from '../utils/APIRoutes';
 
 export default function Chat() {
   const [contacts,setContacts] = useState([]);
   const [currentChat,setCurrentChat] = useState(undefined);
-  const [me,setMe] = useState(JSON.parse(localStorage.getItem("rchat-app-user")))
+  const [me] = useState(JSON.parse(localStorage.getItem("rchat-app-user")))
   const [isLoading,setIsLoading] = useState(true);
   useEffect(()=>{
     (async () => {
@@ -20,6 +21,7 @@ export default function Chat() {
           const data = await axios.get(`${allUsersRoute}/${me._id}`)
           setContacts(data.data.users)
           setIsLoading(false)
+          console.log(isLoading)
         }
       }
       catch(e){return}
@@ -30,6 +32,15 @@ export default function Chat() {
   const changeCurrentChat = (chat) => {
     setCurrentChat(chat)
   }
+
+  const handleSendMsg = async (msg) => {
+    console.log(sendMsgRoute)
+    await axios.post(sendMsgRoute,{
+      from:me._id,
+      to:currentChat._id,
+      message:msg
+    })
+}
   return (
     <Container>
       { isLoading && <Loader></Loader>}
@@ -39,11 +50,11 @@ export default function Chat() {
       {(me && !me.isAvatarImageSet) && (
         <Navigate to="/setavatar" replace={true} />
       )}
-      <div className='ct-container'>
+      {!isLoading && (<div className='ct-container'>
         <Contact contacts={contacts} currentUser={me} changeChat={changeCurrentChat}></Contact>
         {(!currentChat && !isLoading) && <Welcome currentUser={me}></Welcome>}
-        {(currentChat && !isLoading ) && <ChatContainer currentUser={currentChat}></ChatContainer>}
-      </div>
+        {(currentChat && !isLoading ) && <ChatContainer currentChat={currentChat} handleMsg={handleSendMsg}></ChatContainer>}
+      </div>)}
     </Container>
   )
 }
