@@ -1,25 +1,32 @@
 import React from 'react'
 import styled from "styled-components"
+import ChatInput from './ChatInput';
 import Logout from './Logout';
+import Message from './Message';
 
 export default function ChatContainer({currentUser}) {
-  return (
-    <Container>
-        <div className="chat-header">
-            <div className="user-details">
-                <div className="avatar">
-                    <img src={`data:image/svg+xml;base64,${currentUser.avatarImage}`} alt="avatar"/>
+
+    const handleSendMsg = async (msg) => {
+
+    }
+    return (
+        <Container>
+            <div className="chat-header">
+                <div className="user-details">
+                    <div className="avatar">
+                        <img src={`data:image/svg+xml;base64,${currentUser.avatarImage}`} alt="avatar"/>
+                    </div>
+                    <div className="username">
+                        <h3>{currentUser.username}</h3>
+                    </div>
                 </div>
-                <div className="username">
-                    <h3>{currentUser.username}</h3>
-                </div>
+                <Logout></Logout>
             </div>
-            <Logout></Logout>
-        </div>
-        <div className="chat-messages">
-        <div className="chat-input"></div>
-        </div>
-    </Container>
+            <div className="chat-messages">
+                <Message></Message>
+                <ChatInput handleSendMsg={handleSendMsg}></ChatInput>
+            </div>
+        </Container>
   )
 }
 
@@ -47,6 +54,10 @@ const Container = styled.div`
             }
         }
 
+    }
+
+    .chat-messages{
+        height: 100%;
     }
 
 `;

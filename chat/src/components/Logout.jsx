@@ -46,5 +46,11 @@ const Button = styled.div`
     background-color: #9055a2;
     gap: 4px;
     cursor: pointer;
-    color:white
+    color:white;
+
+    &:hover{
+        color: #9055a2;
+        background-color: white;
+    }
+    
 `;
