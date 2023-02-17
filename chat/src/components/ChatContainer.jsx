@@ -1,11 +1,13 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import styled from "styled-components"
 import ChatInput from './ChatInput';
 import Logout from './Logout';
 import Message from './Message';
+import axios from "axios";
+import { getMsgRoute } from '../utils/APIRoutes';
 
 
-export default function ChatContainer({currentChat, handleMsg}) {
+export default function ChatContainer({currentChat, handleMsg,messages}) {
 
     const handleSendMsg = async (msg) => {
         handleMsg(msg)
@@ -24,15 +26,22 @@ export default function ChatContainer({currentChat, handleMsg}) {
                 <Logout></Logout>
             </div>
             <div className="chat-messages">
-                <Message></Message>
-                <ChatInput handleSendMsg={handleSendMsg}></ChatInput>
+                <Message messages={messages}></Message>
             </div>
+            <ChatInput handleSendMsg={handleSendMsg}></ChatInput>
         </Container>
   )
 }
 
 const Container = styled.div`
     padding-top: 1rem;
+    display: grid;
+    grid-template-rows: 10% 80% 10%;
+    gap:0.1rem;
+    overflow: hidden;
+    @media screen and (min-width: 720px) and (max-width:1080px){
+      grid-template-rows: 15% 70% 15%;
+    }
     .chat-header {
         display: flex;
         justify-content: space-between;
@@ -58,7 +67,11 @@ const Container = styled.div`
     }
 
     .chat-messages{
-        height: 100%;
+        padding:1rem 2rem;
+        display: flex;
+        flex-direction: column;
+        gap:1rem;
+        overflow: auto;
     }
 
 `;

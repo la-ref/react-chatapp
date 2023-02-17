@@ -156,7 +156,6 @@ export default function Avatar() {
                         })
                     }
                 })
-            console.log(ava)
             setAvatars(ava)
             setIsLoading(false)})()
 

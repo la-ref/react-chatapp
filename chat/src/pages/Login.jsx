@@ -57,12 +57,15 @@ export default function Login() {
     }
 }
 
+let me = localStorage.getItem("rchat-app-user")
+me = JSON.parse(me)
+
   return (
     <>
-        {(logged || (((localStorage.getItem("rchat-app-user"))) && ((localStorage.getItem("rchat-app-user")).isAvatarImageSet))) && (
+        {(logged || (((localStorage.getItem("rchat-app-user"))) && (me.isAvatarImageSet))) && (
           <Navigate to="/chat" replace={true} />
         )}
-        {(logged && !((localStorage.getItem("rchat-app-user")).isAvatarImageSet)) && (
+        {(logged && !(me.isAvatarImageSet)) && (
           <Navigate to="/setavatar" replace={true} />
         )}
       <FormContainerStyled info={{name:"Login",msg:"Connect", redirect:"/Register"}} setValue={handleChange} submited={handleSubmit}></FormContainerStyled>

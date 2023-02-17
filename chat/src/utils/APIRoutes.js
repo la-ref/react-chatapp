@@ -9,3 +9,4 @@ export const getAvatarRoute2 = `https://api.multiavatar.com/`
 export const allUsersRoute = `${host}/api/auth/allusers`
 
 export const sendMsgRoute = `${host}/api/messages/addmsg`
+export const getMsgRoute = `${host}/api/messages/getmsg`

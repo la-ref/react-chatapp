@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import styled from "styled-components";
 import { Navigate } from "react-router-dom";
 import axios from "axios"
-import { allUsersRoute } from '../utils/APIRoutes';
+import { allUsersRoute, getMsgRoute } from '../utils/APIRoutes';
 import Contact from '../components/Contact';
 import Welcome from '../components/Welcome';
 import ChatContainer from '../components/ChatContainer';
@@ -14,6 +14,9 @@ export default function Chat() {
   const [currentChat,setCurrentChat] = useState(undefined);
   const [me] = useState(JSON.parse(localStorage.getItem("rchat-app-user")))
   const [isLoading,setIsLoading] = useState(true);
+
+  const [messages,setMessages] = useState([]);
+  
   useEffect(()=>{
     (async () => {
       try {
@@ -21,7 +24,6 @@ export default function Chat() {
           const data = await axios.get(`${allUsersRoute}/${me._id}`)
           setContacts(data.data.users)
           setIsLoading(false)
-          console.log(isLoading)
         }
       }
       catch(e){return}
@@ -29,12 +31,23 @@ export default function Chat() {
     })()
   },[])
 
+  useEffect(() => {
+    (async () => {
+      if (currentChat){
+        const response = await axios.post(getMsgRoute,{
+          from: me._id,
+          to:currentChat._id
+        })
+        setMessages(response.data.msg)
+      }
+    })()
+  },[currentChat])
+
   const changeCurrentChat = (chat) => {
     setCurrentChat(chat)
   }
 
   const handleSendMsg = async (msg) => {
-    console.log(sendMsgRoute)
     await axios.post(sendMsgRoute,{
       from:me._id,
       to:currentChat._id,
@@ -53,7 +66,7 @@ export default function Chat() {
       {!isLoading && (<div className='ct-container'>
         <Contact contacts={contacts} currentUser={me} changeChat={changeCurrentChat}></Contact>
         {(!currentChat && !isLoading) && <Welcome currentUser={me}></Welcome>}
-        {(currentChat && !isLoading ) && <ChatContainer currentChat={currentChat} handleMsg={handleSendMsg}></ChatContainer>}
+        {(currentChat && !isLoading ) && <ChatContainer currentChat={currentChat} handleMsg={handleSendMsg} messages={messages}></ChatContainer>}
       </div>)}
     </Container>
   )

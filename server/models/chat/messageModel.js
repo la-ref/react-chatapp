@@ -34,12 +34,25 @@ async function addMessage(from,to,msg){
         return data
     }
     catch (error){
-        console.log(error)
         throw(error);
+    }
+}
+
+async function getMessages(from,to){
+    try{
+        const messages = await message.find({"message.users":{$all:[from,to]}}).sort({updatedAt:1});
+        const projectMessage = messages.map((msg) =>{
+            return({fromSelf:msg.sender.toString() === from,message:msg.message.text})
+        })
+        return projectMessage
+    }
+    catch (e){
+        throw(e)
     }
 }
 
 module.exports = {
     Message: message,
-    addMessages:addMessage
+    addMessages:addMessage,
+    getMessages:getMessages
 }
