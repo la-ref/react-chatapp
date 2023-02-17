@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-export default function Message({messages}) {
+export default function Message({messages,scroll}) {
 
   return (
-    <Container>
+    <Container ref={scroll}>
 
     {messages.length &&
         messages.map((msg,index) => {

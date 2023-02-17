@@ -1,13 +1,13 @@
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import styled from "styled-components"
 import ChatInput from './ChatInput';
 import Logout from './Logout';
 import Message from './Message';
-import axios from "axios";
-import { getMsgRoute } from '../utils/APIRoutes';
+import { v4 as uuidv4 } from 'uuid'
 
 
-export default function ChatContainer({currentChat, handleMsg,messages}) {
+
+export default function ChatContainer({currentChat, handleMsg,messages,scrollRef}) {
 
     const handleSendMsg = async (msg) => {
         handleMsg(msg)
@@ -26,7 +26,7 @@ export default function ChatContainer({currentChat, handleMsg,messages}) {
                 <Logout></Logout>
             </div>
             <div className="chat-messages">
-                <Message messages={messages}></Message>
+                <Message scroll={scrollRef} messages={messages}></Message>
             </div>
             <ChatInput handleSendMsg={handleSendMsg}></ChatInput>
         </Container>
@@ -72,6 +72,7 @@ const Container = styled.div`
         flex-direction: column;
         gap:1rem;
         overflow: auto;
+        //flex-direction: column-reverse;
     }
 
 `;

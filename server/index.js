@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes")
 const {avatarRoute} = require("./routes/avatarRoute")
 const messageRoute = require("./routes/messageRoute")
 const app = express()
+const socket = require("socket.io");
 require("dotenv").config()
 
 const PORT = process.env.PORT || 5000
@@ -32,3 +33,37 @@ async function mongo(){
 mongo()
     .then(() => console.log("Connection Successfull DB"))
     .catch(err => console.log(err))
+
+const io = socket(server,{
+    cors:{
+        orgin:"http://localhost:5000",
+        credentials:true,
+    }
+})
+
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+
+global.onlineUsers = {}
+
+io.on("connection",(socket) => {
+    socket.on("add-user",(userId) => {
+        onlineUsers[userId] = {socket:socket.id}
+    })
+
+    socket.on("send-msg",(data) => {
+        const sendUserSocket = onlineUsers[data.to];
+        if (sendUserSocket){
+            console.log("send to",data)
+            console.log(onlineUsers,"msg")
+            socket.to(sendUserSocket.socket).emit("msg-receive",{msg:data.message,from:data.from})
+        }
+    })
+
+    socket.on('disconnect', function() {
+        const key = getKeyByValue(onlineUsers,socket)
+        delete onlineUsers[key]
+        console.log(onlineUsers,"disco")
+     });
+})
