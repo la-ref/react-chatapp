@@ -73,6 +73,14 @@ const Container = styled.div`
         gap:1rem;
         overflow: auto;
         //flex-direction: column-reverse;
+        &::-webkit-scrollbar{
+            width: 0.4rem;
+            &-thumb{
+                background-color: #9055a2;
+                width: 0.3rem;
+                border-radius: 1rem;
+            }
+        }
     }
 
 `;
