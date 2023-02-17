@@ -3,9 +3,6 @@ import styled from "styled-components"
 import ChatInput from './ChatInput';
 import Logout from './Logout';
 import Message from './Message';
-import { v4 as uuidv4 } from 'uuid'
-
-
 
 export default function ChatContainer({currentChat, handleMsg,messages,scrollRef}) {
 

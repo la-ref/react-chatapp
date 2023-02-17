@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 import { Navigate } from "react-router-dom";
-import axios from "axios";
 import {toast} from "react-toastify"
-import { loginRoute } from '../utils/APIRoutes';
 import {BiPowerOff} from "react-icons/bi";
 
 export default function Logout() {
